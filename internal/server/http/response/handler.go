@@ -1,4 +1,4 @@
-package server_response
+package response
 
 import (
 	"encoding/json"
