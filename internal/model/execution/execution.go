@@ -1,6 +1,4 @@
-package execution
-
-type Language string
+package model_execution
 
 type Execution struct {
 	Language         Language
@@ -8,4 +6,10 @@ type Execution struct {
 	InlineExpression bool
 	Arguments        []string
 	Environment      map[string]string
+}
+
+type Result struct {
+	StdOut            string
+	StdErr            string
+	ExecutionTimeInMS int
 }

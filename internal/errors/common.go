@@ -1,0 +1,7 @@
+package errs
+
+import "errors"
+
+var (
+	ErrInvalidLanguage = errors.New("invalid language")
+)

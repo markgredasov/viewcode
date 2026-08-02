@@ -1,20 +1,28 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
-	"os"
+	"net/http"
+	"os/signal"
+	"syscall"
 
-	"github.com/markgredasov/viewcode/internal/logger"
+	"github.com/markgredasov/viewcode/internal/app"
 )
 
 func main() {
-	loggerConfig := logger.NewConfigMust()
-	logger, err := logger.NewLogger(loggerConfig)
-	if err != nil {
-		//nolint:forbidigo // logger was not initialized to write here smth
-		fmt.Println("failed to initialize logger:", err)
-		os.Exit(1)
-	}
+	ctx, cancel := signal.NotifyContext(
+		context.Background(),
+		syscall.SIGINT, syscall.SIGTERM,
+	)
+	defer cancel()
 
-	logger.Debug("starting application")
+	app := app.NewApp(ctx, cancel)
+
+	if err := app.Run(); err != nil {
+		if !errors.Is(err, http.ErrServerClosed) {
+			fmt.Println("run application: %w", err)
+		}
+	}
 }
