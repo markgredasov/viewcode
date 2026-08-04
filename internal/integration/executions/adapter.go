@@ -1,4 +1,4 @@
-package execution
+package integration_executions
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 )
 
 var languageToExecutionLanguage = map[model_execution.Language]string{
-	model_execution.LanguageGo:     "go",
+	model_execution.LanguageGo:     "golang",
 	model_execution.LanguagePython: "python3",
 	model_execution.LanguageRust:   "rust",
 }
@@ -30,12 +30,15 @@ func NewAdapter() (*Adapter, error) {
 }
 
 func (a *Adapter) MakeExecution(ctx context.Context, exec model_execution.Execution) (model_execution.Result, error) {
+	ctx, cancel := context.WithTimeout(ctx, a.client.execTimeout)
+	defer cancel()
+
 	language, ok := languageToExecutionLanguage[exec.Language]
 	if !ok {
 		return model_execution.Result{}, fmt.Errorf("convert language: %w", errs.ErrInvalidLanguage)
 	}
 
-	execResponse, err := a.client.makeExecution(ctx, language, exec.Code)
+	execResponse, err := a.client.makeExecution(ctx, language, exec.Code.String())
 	if err != nil {
 		return model_execution.Result{}, fmt.Errorf("make exec: %w", err)
 	}

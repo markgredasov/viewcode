@@ -11,14 +11,23 @@ const (
 )
 
 func NewLanguage(lang string) (Language, error) {
-	switch lang {
-	case string(LanguageGo):
-		return LanguageGo, nil
-	case string(LanguagePython):
-		return LanguagePython, nil
-	case string(LanguageRust):
-		return LanguageRust, nil
+	language := Language(lang)
+	if !language.IsValid() {
+		return "", errs.ErrInvalidLanguage
 	}
 
-	return "", errs.ErrInvalidLanguage
+	return language, nil
+}
+
+func (l Language) String() string {
+	return string(l)
+}
+
+func (l Language) IsValid() bool {
+	switch l {
+	case LanguageGo, LanguagePython, LanguageRust:
+		return true
+	}
+
+	return false
 }

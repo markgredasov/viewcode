@@ -1,6 +1,6 @@
-package execution
+package integration_executions
 
-type executionRequest struct {
+type executionsRequest struct {
 	Language         string            `json:"language"`
 	Code             string            `json:"code"`
 	InlineExpression bool              `json:"inline_expression"`
@@ -8,7 +8,7 @@ type executionRequest struct {
 	Environment      map[string]string `json:"environment"`
 }
 
-type executionResponse struct {
+type executionsResponse struct {
 	StdOut     string `json:"stdout"`
 	StdErr     string `json:"stderr"`
 	ExecTimeMS int    `json:"exectimems"`

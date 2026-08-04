@@ -21,7 +21,7 @@ func NewHTTPResponseHandler(l *logger.Logger, w http.ResponseWriter) *HTTPRespon
 	}
 }
 
-func (h *HTTPResponseHandler) JSONReponse(responseBody any, statusCode int) {
+func (h *HTTPResponseHandler) JSONResponse(responseBody any, statusCode int) {
 	h.w.WriteHeader(statusCode)
 
 	if err := json.NewEncoder(h.w).Encode(responseBody); err != nil {
@@ -61,5 +61,5 @@ func (h *HTTPResponseHandler) errorResponse(statusCode int, err error, msg strin
 		Message: msg,
 	}
 
-	h.JSONReponse(errorResponse, statusCode)
+	h.JSONResponse(errorResponse, statusCode)
 }

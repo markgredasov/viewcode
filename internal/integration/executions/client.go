@@ -1,19 +1,22 @@
-package execution
+package integration_executions
 
 import (
 	"context"
 	"fmt"
+	"time"
 
 	ranna "github.com/ranna-go/ranna/pkg/client"
 	"github.com/ranna-go/ranna/pkg/models"
 )
 
 const (
-	execURL = "/"
+	execURL = "http://localhost:8081"
+	timeout = "10s"
 )
 
 type client struct {
 	rannaClient ranna.Client
+	execTimeout time.Duration
 }
 
 func newClient() (*client, error) {
@@ -25,13 +28,19 @@ func newClient() (*client, error) {
 		return nil, err
 	}
 
+	timeout, err := time.ParseDuration(timeout)
+	if err != nil {
+		return nil, err
+	}
+
 	return &client{
 		rannaClient: rannaClient,
+		execTimeout: timeout,
 	}, nil
 }
 
-func (c *client) makeExecution(ctx context.Context, language, code string) (*executionResponse, error) {
-	reqBody := executionRequest{
+func (c *client) makeExecution(ctx context.Context, language, code string) (*executionsResponse, error) {
+	reqBody := executionsRequest{
 		Language:         language,
 		Code:             code,
 		InlineExpression: false,
@@ -51,7 +60,7 @@ func (c *client) makeExecution(ctx context.Context, language, code string) (*exe
 		return nil, fmt.Errorf("exec: %w", err)
 	}
 
-	return &executionResponse{
+	return &executionsResponse{
 		StdOut:     resp.StdOut,
 		StdErr:     resp.StdErr,
 		ExecTimeMS: resp.ExecTimeMS,

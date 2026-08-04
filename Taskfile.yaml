@@ -28,6 +28,14 @@ tasks:
     cmds:
       - '{{.GOLANGCI_LINT}} run ./... --config=.golangci.yml'
 
+  env-up:
+    cmds:
+      - docker compose up -d ranna
+
+  env-down:
+    cmds:
+      - docker compose down ranna
+
   run:
     cmds:
       - go run ./cmd/app/main.go

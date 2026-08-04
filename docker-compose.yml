@@ -4,10 +4,9 @@ services:
     environment:
       HOSTROOTDIR: "/var/opt/ranna"
       API.MAXOUTPUTLEN: "1M"
-      SANDBOX.MEMORY: "512M"
-      SANDBOX.TIMEOUTSECONDS: "20"
-      SANDBOX.STREAMBUFFERCAP: "1M"
-      API_TLS_ENABLED: "false"
+      SANDBOX.MEMORY: "1G"
+      SANDBOX.TIMEOUTSECONDS: "60"
+      SANDBOX.STREAMBUFFERCAP: "2M"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/var/opt/ranna:/var/opt/ranna"
