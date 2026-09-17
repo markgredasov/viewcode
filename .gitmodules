@@ -1,0 +1,6 @@
+[submodule "submissions"]
+	path = submissions
+	url = git@github.com:markgredasov/viewcode-submissions.git
+[submodule "sandbox"]
+	path = sandbox
+	url = git@github.com:markgredasov/viewcode-sandbox.git
